@@ -7,6 +7,9 @@ const greeting = document.getElementById("greeting");
 const attendanceCount = document.getElementById("attendanceCount");
 const progressBar = document.getElementById("attendanceBar");
 const celebration = document.getElementById("celebration");
+const partyPopperOverlay = document.getElementById("partyPopperOverlay");
+const partyPopperParticles = document.getElementById("partyPopperParticles");
+const partyPopperMessage = document.getElementById("partyPopperMessage");
 const attendeeList = document.getElementById("attendeeList");
 const leaderboardEntries = document.getElementById("leaderboardEntries");
 
@@ -97,6 +100,7 @@ if (form) {
 
     console.log("Team attendance percentages", getTeamBreakdown());
 
+    showPartyPopperCelebration(`🎉 ${name} checked in from ${teamName}!`);
     renderAttendees();
     updateTeamPercentages();
     updateLeaderboard();
@@ -106,6 +110,42 @@ if (form) {
 
     form.reset();
   });
+}
+
+function showPartyPopperCelebration(message) {
+  if (!partyPopperOverlay || !partyPopperParticles || !partyPopperMessage) return;
+
+  partyPopperMessage.textContent = message;
+  partyPopperParticles.innerHTML = "";
+
+  const colors = ["#ff4d4f", "#f59e0b", "#22c55e", "#3b82f6", "#ec4899", "#facc15"];
+
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement("div");
+    piece.className = "popper-piece";
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 120 + Math.random() * 120;
+    const dx = Math.cos(angle) * distance + "px";
+    const dy = Math.sin(angle) * distance + "px";
+    const rotation = Math.floor(Math.random() * 360) + "deg";
+    piece.style.setProperty("--dx", dx);
+    piece.style.setProperty("--dy", dy);
+    piece.style.setProperty("--rot", rotation);
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.left = "50%";
+    piece.style.top = "50%";
+    piece.style.marginLeft = "-5px";
+    piece.style.marginTop = "-5px";
+    piece.style.animationDelay = (Math.random() * 0.15) + "s";
+
+    partyPopperParticles.appendChild(piece);
+  }
+
+  partyPopperOverlay.classList.add("active");
+
+  window.setTimeout(function () {
+    partyPopperOverlay.classList.remove("active");
+  }, 1700);
 }
 
 function showGreeting(message) {
