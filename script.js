@@ -1,5 +1,3 @@
-// Complete LevelUp Version
-
 // Get DOM Elements
 const form = document.getElementById("checkInForm");
 const nameInput = document.getElementById("attendeeName");
